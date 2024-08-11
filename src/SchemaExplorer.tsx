@@ -44,12 +44,12 @@ const Path = styled.div`
     padding-left: 20px;
 
     a {
-      color: inherit;
-      text-decoration: none;
+        color: inherit;
+        text-decoration: none;
     }
 
     a.active {
-      color: #0057d8;
+        color: #0057d8;
     }
 `;
 
@@ -121,10 +121,10 @@ const Permalink: React.FC = () => {
   const location = useLocation();
   return (
     <Button
-        appearance="link"
-        href={location.pathname + location.search}
-        iconBefore={<LinkIcon label="permalink" />}
-      >Permalink
+      appearance="link"
+      href={location.pathname + location.search}
+      iconBefore={<LinkIcon label="permalink" />}
+    >Permalink
     </Button>
   );
 };
@@ -233,6 +233,29 @@ function getDescriptionForSchema(schema: JsonSchema): string | undefined {
   return schema.description;
 }
 
+
+function getConcreteDescriptionForSchema(initialSchema: JsonSchema, schema: JsonSchema): string | undefined {
+  if (typeof schema === 'boolean') {
+    return schema ? 'Anything is allowed here.' : 'There is no valid value for this property.';
+  }
+  if (isExternalReference(schema)) {
+    return 'This is an external reference. Click on the reference to try and view this external JSON Schema. Use the browser back button to return here.'
+  }
+  if (Object.keys(schema).length === 0) {
+    return 'Anything is allowed here.';
+  }
+
+  console.log(typeof initialSchema);
+
+  if(typeof initialSchema === 'object') {
+    if(initialSchema.description) {
+      return initialSchema.description;
+    }
+  }
+
+  return schema.description;
+}
+
 export const SchemaExplorerDetails: React.FC<SchemaExplorerDetailsProps> = props => {
   const { schema, reference, clickElement, lookup, stage } = props;
   const properties = schema.properties || {};
@@ -263,7 +286,7 @@ export const SchemaExplorerDetails: React.FC<SchemaExplorerDetailsProps> = props
           <ParameterView
             key={p.propertyName}
             name={p.propertyName}
-            description={getDescriptionForSchema(p.lookupResult.schema)}
+            description={getConcreteDescriptionForSchema(p.initialSchema, p.lookupResult.schema)}
             required={isRequired}
             deprecated={false}
             schema={p.lookupResult.schema}
@@ -431,25 +454,25 @@ export type SchemaExplorerState = {
 
 export class SchemaExplorer extends React.PureComponent<SchemaExplorerProps, SchemaExplorerState> {
   public static Container = styled.section`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 24px 20px;
-    margin: 0;
-    max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      padding: 24px 20px;
+      margin: 0;
+      max-width: 100%;
   `;
 
   public static HeadingContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
   `;
 
   public static Heading = styled.h1`
-    font-size: 16px;
-    font-weight: 600;
-    padding-top: 24px;
-    margin: 5px 8px;
+      font-size: 16px;
+      font-weight: 600;
+      padding-top: 24px;
+      margin: 5px 8px;
   `;
 
   constructor(props: SchemaExplorerProps) {
