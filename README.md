@@ -42,7 +42,7 @@ yarn build-and-deploy
 ## Documentation
 
 This project is a React SPA that is designed to be deployed to AWS CloudFront. It implements a Schema Explorer for JSON Schema and does not build an abstraction
-layer between JSON Schema and the UI layer. We currently support JSON Schema Draft 07 in the code.
+layer between JSON Schema and the UI layer. We currently support JSON Schema Draft 2020-12 in the code.
 
 ## Tests
 

@@ -245,8 +245,6 @@ function getConcreteDescriptionForSchema(initialSchema: JsonSchema, schema: Json
     return 'Anything is allowed here.';
   }
 
-  console.log(typeof initialSchema);
-
   if(typeof initialSchema === 'object') {
     if(initialSchema.description) {
       return initialSchema.description;
